@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>my page</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href=" https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+ />
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+      integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+      integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+      integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+      crossorigin="anonymous"
+    ></script>
+    <style></style>
+  </head>
+  <body>
+
+<
+
+<!-- DeleteModal -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+       Are you sure to delete employee ?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" onclick="deleteconfirm(true)">Confirm</button>
+      </div>
+    </div>
+  </div>
+</div>
+   <!-- EndModal -->
+
+
+    <h1 class="text-info text-center">Add New Employee</h1>
+    <div class="container border border-primary" h-100">
+      <div class="form-container">
+        <form>
+            <div class="form-group">
+                <label for="exampleInputName">name</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="exampleInputName"
+                />
+              </div>
+              <div class="form-group">
+                <label for="exampleInputAddress">address</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="exampleInputAddress"
+                />
+              </div>
+          <div class="form-group">
+            <label for="exampleInputEmail">Email address</label>
+            <input
+              type="email"
+              class="form-control"
+              id="exampleInputEmail"
+            />
+          </div>
+          <div class="form-group">
+            <label for="exampleInputPhone">phone number</label>
+            <input
+              type="number"
+              class="form-control"
+              id="exampleInputPhone"
+            />
+          </div>
+          <div class="form-group form-check">
+            <input
+              type="checkbox"
+              class="form-check-input"
+              id="exampleCheck1"
+            />
+            <label class="form-check-label" for="exampleCheck1"
+              >Check me out</label>
+              <div>
+                  <button
+            type="button"
+            class="btn btn-primary"
+            onclick="validateForm();"
+          >
+            Submit
+          </button>
+        </div>
+        <div class="alert alert-success" role="alert" style="display: none;" id="msg">
+          Employee added Successfully
+        </div>
+        <div class="alert alert-danger" role="alert" style="display: none;" id="msgError">
+          Employee email already is existed
+        </div>
+
+        <div class=class="form-check-label" for="exampleCheck1" style="margin-top: 10px;"> <button
+            type="button"
+            class="btn btn-primary"
+            onclick="displayEmployees()"
+          >
+            view Employee details
+          </button></div>
+        </div>
+    </div>
+    <div class="form-container text-center">
+        <div id="tb1">
+        </div>
+    </div>
+    <script>
+       
+      var Employees= [{name: "DSK", address: "Hyd", email: "ds@mail.com", phone: "999999999999"}];
+      var formObject = {};
+      var deleteKey1 = {};
+        function displayEmployees() {
+        let table = 
+        // string
+`<table class="table table-striped" id = "myTable">
+<thead>
+    <tr>
+      <th scope="col"> Name </th>
+      <th scope="col"> Address </th>               
+      <th scope="col"> Email </th>
+      <th scope="col"> Phone </th>
+      <th scope="col"> actions </th>
+      </tr>
+      </thead>
+      <tbody>`;
+
+        
+
+        var deleteKey;
+
+       for(var i=0;i<Employees.length;i++){
+
+        var temp={};
+        temp = Employees[i];
+        deleteKey = temp["email"];
+        table = table + "<tr>";
+        for (let key in temp) {
+        if (temp.hasOwnProperty(key)) {
+
+           table = table + "<td>"+ temp[key] +"</td>";
+          key++;
+        }
+
+       }
+       table = table + `<td> <i class='fa fa-trash'  onclick='deleteEmployee("${deleteKey}")'  aria-hidden='true'></i></td></tr>`;   
+      }
+        table = table +`</tbody> 
+        </table>`;
+      
+
+        document.getElementById("tb1").innerHTML = table;
+        document.getElementById("msg").style.display ="none";
+    }
+        function validateForm(){
+            // Selecting the input element and get its value 
+            var inputName= document.getElementById("exampleInputName").value;
+            var inputAddress= document.getElementById("exampleInputAddress").value;
+            var inputEmail= document.getElementById("exampleInputEmail").value;
+            var inputPhone= document.getElementById("exampleInputPhone").value;
+            formObject = {};
+                formObject.name=inputName;
+                formObject.address=inputAddress;
+                formObject.email=inputEmail;
+                formObject.phone=inputPhone;
+             
+                /* check for duplicates */
+
+                var is_exist=false;
+
+                for(var i=0;i<Employees.length;i++){
+
+                  var temp1={};
+                  temp1 = Employees[i];
+                  if(temp1["email"] == formObject.email){
+                     is_exist = true;
+                     break;
+                  }
+                    }
+
+                    if(is_exist){
+                      document.getElementById("msgError").style.display ="block";
+                      document.getElementById("msg").style.display ="none";
+                    }else{
+                      Employees.push(formObject);
+                      document.getElementById("msg").style.display ="block";
+                      document.getElementById("msgError").style.display ="none";
+                    }
+        }
+
+
+        function deleteconfirm(status){
+
+          if(status){
+            Employees = Employees.filter((employee) => employee.email !== deleteKey1);
+            this.displayEmployees();
+            $("#exampleModalCenter").modal('hide');
+
+          }
+        }
+         function deleteEmployee(key){
+                deleteKey1 = key;
+          $("#exampleModalCenter").modal('show');    
+        }
+    </script>
+  </body>
+</html>
